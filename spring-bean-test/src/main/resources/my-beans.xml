@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="helloWorld" class="com.baoyong.test.HelloWorld">
+        <property name="name" value="hello world"/>
+    </bean>
+
+    <bean id="address" class="com.baoyong.test.Address" p:id="12" p:name="深圳龙岗区"/>
+
+    <bean id="student" class="com.baoyong.test.Student">
+        <property name="name" value="byJiang"/>
+        <property name="address" ref="address"/>
+        <property name="books">
+            <array>
+                <value>三国演义</value>
+                <value>水浒传</value>
+                <value>红楼梦</value>
+            </array>
+        </property>
+        <property name="hobbys">
+            <list>
+                <value>唱歌</value>
+                <value>跑步</value>
+                <value>做菜</value>
+            </list>
+        </property>
+        <property name="card">
+            <map>
+                <entry key="1" value="学生卡"/>
+                <entry key="2" value="图书证"/>
+            </map>
+        </property>
+        <property name="games">
+            <set>
+                <value>王者荣耀</value>
+                <value>吃鸡</value>
+            </set>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="1">语文</prop>
+                <prop key="2">英语 </prop>
+            </props>
+        </property>
+        <property name="wife">
+            <null></null>
+        </property>
+    </bean>
+</beans>
