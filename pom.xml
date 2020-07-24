@@ -14,6 +14,7 @@
         <module>spring-java-config</module>
         <module>spring-proxy</module>
         <module>spring-aop-test</module>
+        <module>mybatis-spring-test</module>
     </modules>
     <build>
         <plugins>
