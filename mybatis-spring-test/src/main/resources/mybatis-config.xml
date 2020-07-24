@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 存在顺序
+      properties>settings>typeAliases>typeHandlers>objectFactory>objectWrapperFactory>plugins>environments>databaseIdProvider>mappers-->
+
+    <!-- 用于设置mybatis配置 -->
+    <settings>
+        <!-- 开启驼峰命名自动匹配 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <!-- 类型别名（typeAliases）
+        指定一个包名，MyBatis 会在包名下面搜索需要的 Java Bean
+        在没有注解的情况下，会使用 Bean 的首字母小写的非限定类名来作为它的别名
+    -->
+    <typeAliases>
+        <package name="com.baoyong.test.pojo"/>
+    </typeAliases>
+
+
+    
+    <!-- mybatis 原始版配置 begin-->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/by_data?serverTimezone=Asia/Shanghai"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 映射器 指定xml地址 -->
+    <!--<mappers>
+        <mapper resource="com/baoyong/test/mapper/PersonInfoMapper.xml"/>
+    </mappers>-->
+    <!-- 将包内的映射器接口实现全部注册为映射器 -->
+    <mappers>
+        <package name="com.baoyong.test.mapper"/>
+    </mappers>
+    <!-- mybatis 原始版配置 end-->
+</configuration>

@@ -8,13 +8,32 @@
     <bean id="logBefore" class="com.baoyong.test.log.LogMethodsBefore" />
     <bean id="logAfter" class="com.baoyong.test.log.LogMethodsAfter" />
 
+    <bean id="myAspect" class="com.baoyong.test.diy.MyAspect" />
+
     <!-- aop切面管理 -->
     <aop:config>
-        <!-- 切面 -->
+        <!-- 切入点 -->
         <aop:pointcut id="pointcut" expression="execution(* com.baoyong.test.bean.*.*(..))"/>
-        <!-- 切面AOP 加入公共业务bean -->
+        <!-- 切入点对应的公共业务bean -->
         <aop:advisor advice-ref="logBefore" pointcut-ref="pointcut" />
         <aop:advisor advice-ref="logAfter" pointcut-ref="pointcut" />
+
+        <!-- 自定义切面 以及切入点 ， 切入点业务 begin -->
+        <aop:aspect ref="myAspect">
+            <!-- 切入点共用算了，有需要的也可以独立定义 -->
+<!--            <aop:pointcut id="" expression=""/>-->
+            <aop:before method="before" pointcut-ref="pointcut"/>
+            <aop:after method="after" pointcut-ref="pointcut"/>
+        </aop:aspect>
+
+        <!-- 自定义 end -->
     </aop:config>
+
+    <!-- 表示支持注解    属性true表示强制所有动态代理默认使用 cglib false则表示默认使用JDK -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!-- 注解实现的切面bean -->
+    <bean id="anAspect" class="com.baoyong.test.annotation.AnnotationAspect" />
+
 
 </beans>
