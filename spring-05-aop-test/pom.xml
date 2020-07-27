@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>spring-aop-test</artifactId>
+    <artifactId>spring-05-aop-test</artifactId>
 
     <dependencies>
         <!-- 切面aop 所需的jar -->

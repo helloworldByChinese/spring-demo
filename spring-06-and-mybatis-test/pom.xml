@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mybatis-spring-test</artifactId>
+    <artifactId>spring-06-and-mybatis-test</artifactId>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
