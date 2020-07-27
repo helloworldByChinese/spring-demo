@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>mybatis-spring-test</artifactId>
+    <artifactId>spring-08-transation-test</artifactId>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
@@ -24,26 +24,13 @@
             <artifactId>mybatis</artifactId>
             <version>3.5.5</version>
         </dependency>
-        <!-- spring 自带的连接池管理 -->
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>5.2.7.RELEASE</version>
-        </dependency>
+
 
         <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>1.9.5</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>2.0.5</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
@@ -52,6 +39,22 @@
             <version>1.18.12</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- mybatis-spring 相关 begin -->
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>2.0.5</version>
+        </dependency>
+        <!-- spring 自带的连接池管理 org.springframework.jdbc.datasource.DriverManagerDataSource 用于创建dataSource -->
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>5.2.7.RELEASE</version>
+        </dependency>
+        <!-- mybatis-spring 相关 end -->
     </dependencies>
     <!-- build 静态资源过滤 xml属于静态资源，不配置会直接过滤
         directory：指定资源所在的目录，这个目录的路径是相对于pom.xml文件

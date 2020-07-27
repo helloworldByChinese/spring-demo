@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- 此处数据库为by_data_demo2 -->
+    <bean id="bookDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/by_data_demo2?serverTimezone=Asia/Shanghai"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+    </bean>
+
+
+    <bean id="bookSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="bookDataSource" />
+        <property name="mapperLocations" value="classpath:com/baoyong/test/mapper/*.xml" />
+    </bean>
+
+    <!-- 方式三： 完全优化：
+        按文件夹扫描 ID默认为接口类小写-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.baoyong.test.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="bookSqlSessionFactory" />
+    </bean>
+
+    <!-- 事务相关配置 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <constructor-arg name="dataSource" ref="bookDataSource"/>
+    </bean>
+
+    <!--事务通知配置 -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <!-- 对应的方法增加事务 -->
+        <tx:attributes>
+            <!-- 表示所有方法都添加事务 事务传播机制默认是REQUIRED -->
+            <tx:method name="get*" propagation="NOT_SUPPORTED"/>
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!-- 定义切入点 -->
+    <aop:config>
+        <aop:pointcut id="pointcut" expression="execution(* com.baoyong.test.service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+    </aop:config>
+
+    <!-- 此处模拟实际开发场景，单独创建了一个service包来做事务管理 -->
+    <bean id="bookServiceImpl" class="com.baoyong.test.service.BookServiceImpl" lazy-init="true">
+        <property name="bookMapper" ref="bookMapper"/>
+    </bean>
+
+</beans>

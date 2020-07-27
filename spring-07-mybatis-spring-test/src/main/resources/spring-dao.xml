@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--需要创建数据源 -->
+    <bean id="personDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/by_data?serverTimezone=Asia/Shanghai"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+    </bean>
+
+    <!-- 此处为了设置多个数据源，仅是做了一个不同的database做演示，实际开发中大多是不同类型的数据库 -->
+    <!-- 此处数据库为by_data_demo2 -->
+    <bean id="bookDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+        <property name="url" value="jdbc:mysql://localhost:3306/by_data_demo2?serverTimezone=Asia/Shanghai"/>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+    </bean>
+
+    <!-- 关联dataSource创建sessionFactory 还可以指定关联的mybatis配置 -->
+    <bean id="personSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="personDataSource" />
+        <!-- 这里是绑定mybatis配置文件，也可以将mapper文件夹地址在此绑定，也可在mybatis配置文件中配置  -->
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <property name="mapperLocations" value="classpath:com/baoyong/test/mapper/*.xml"/>
+    </bean>
+
+    <bean id="bookSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="bookDataSource" />
+        <property name="configLocation" value="mybatis-config.xml" />
+        <property name="mapperLocations" value="classpath:com/baoyong/test/mapper2/*.xml" />
+    </bean>
+
+    <!-- 以上步骤都需要的 -->
+
+    <!-- 方式一： 单文件 全步骤未简化逻辑 begin-->
+    <!-- 1. 创建 sqlsession -->
+    <!--<bean id="personSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="personSqlSessionFactory"/>
+    </bean>
+
+    <bean id="bookSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="bookSqlSessionFactory"/>
+    </bean>
+
+    &lt;!&ndash; 2.创建Mapper 对应的bean 在此注入对应的sqlSession&ndash;&gt;
+    <bean id="personInfoMapper" class="com.baoyong.test.mapper.PersonInfoMapperImpl">
+        <property name="sqlSessionTemplate" ref="personSqlSession"/>
+    </bean>
+
+    <bean id="bookMapper" class="com.baoyong.test.mapper2.BookMapperImpl">
+        <property name="sqlSessionTemplate" ref="bookSqlSession"/>
+    </bean>-->
+
+
+    <!--方式二···初步优化：
+        单个文件配置
+        MapperFactoryBean为了代替手工使用SqlSessionDaoSupport或SqlSessionTemplate编写数据访问对象(DAO)的代码,使用动态代理实现。
+     -->
+   <!-- <bean id="personInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.baoyong.test.mapper.PersonInfoMapper" />
+        <property name="sqlSessionFactory" ref="personSqlSessionFactory" />
+    </bean>
+
+    <bean id="bookMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.baoyong.test.mapper2.BookMapper" />
+        <property name="sqlSessionFactory" ref="bookSqlSessionFactory" />
+    </bean>-->
+
+    <!-- 方式三： 完全优化：
+        按文件夹扫描 ID默认为接口类小写-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.baoyong.test.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="personSqlSessionFactory" />
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.baoyong.test.mapper2"/>
+        <property name="sqlSessionFactoryBeanName" value="bookSqlSessionFactory" />
+    </bean>
+
+</beans>

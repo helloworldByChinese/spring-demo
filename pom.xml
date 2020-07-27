@@ -15,6 +15,9 @@
         <module>spring-proxy</module>
         <module>spring-aop-test</module>
         <module>mybatis-spring-test</module>
+        <module>mybatis-spring-test</module>
+        <module>spring-08-transation-test</module>
+        <module>mybatis-01-demo</module>
     </modules>
     <build>
         <plugins>
